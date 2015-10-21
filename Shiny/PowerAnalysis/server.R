@@ -11,10 +11,10 @@ shinyServer(function(input, output) {
   observeEvent(input$post, {
     v$data <- 1
   })
-  
   observeEvent(input$reset, {
     v$data <- NULL
   })
+  output$URLlink <- renderText({'<a href = "https://github.com/KeachMurakami/Statistical/tree/master/Shiny/PowerAnalysis">コードなど@GitHub</a>'})
   output$fig <- renderPlot({
     num <-
       ceiling(
@@ -33,7 +33,6 @@ shinyServer(function(input, output) {
     
     if(is.null(v$data)) return()
     else if(v$data == 0){ 
-    #事前分析の場合
       data <-  data.frame(Trtm = c("Ctrl", "Trtm"), value = c(100, 100 + input$dif), se = input$SD/sqrt(num - 1))
       return(
         ggplot(data = data, aes(x = Trtm, y = value, fill = Trtm)) +
@@ -46,7 +45,6 @@ shinyServer(function(input, output) {
       )
     }
     else if(v$data == 1){
-    #事後分析の場合
       data <- data.frame(Trtm = c("Ctrl", "Trtm"), value = c(100, 100 + dif), se = input$SD/sqrt(input$num - 1))
       return(
         ggplot(data = data, aes(x = Trtm, y = value, fill = Trtm)) +
